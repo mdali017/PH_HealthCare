@@ -2,11 +2,22 @@ import { Request, Response } from "express";
 import { userService } from "./user.service";
 
 const createAdmin = async (req: Request, res: Response) => {
-  // console.log(req.body)
+  try {
+    const result = await userService.createAdmin(req.body);
 
-  const result = await userService.createAdmin(req.body);
-
-  res.json({ message: " Admin created successfully ", data: result });
+    res.status(201).json({
+      success: true,
+      message: "Admin created successfully",
+      data: result,
+    });
+  } catch (error) {
+    const err = error as Error;
+    res.status(500).json({
+      success: false,
+      message: err.name || "Something went wrong",
+      error: err,
+    });
+  }
 };
 
 export const userController = {
