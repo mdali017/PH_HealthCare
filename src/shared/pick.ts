@@ -11,7 +11,7 @@ const pick = <T, k extends keyof T>(obj: T, keys: k[]) => {
         finalObj[key] = obj[key];
       }
     }
-    console.log({ finalObj });
+    // console.log({ finalObj });
     return finalObj;
   };
 
