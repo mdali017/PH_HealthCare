@@ -3,6 +3,7 @@ import { equal } from "assert";
 import { adminSearchAbleFields } from "./admin.constant";
 import { paginationHelpers } from "../../../helpars/paginationHelper";
 import prisma from "../../../shared/prisma";
+import { IAdminFilterableRequest } from "./admin.interface";
 
 // const prisma = new PrismaClient();
 
@@ -28,11 +29,13 @@ import prisma from "../../../shared/prisma";
 //   };
 // };
 
-
-
-const getAllAdminsFromDB = async (params: any, options: any) => {
+const getAllAdminsFromDB = async (
+  params: IAdminFilterableRequest,
+  options: any
+) => {
   // console.log(params);
   // const { limit, page } = options;
+  console.log(options);
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
@@ -70,7 +73,7 @@ const getAllAdminsFromDB = async (params: any, options: any) => {
     andConditions.push({
       AND: Object.keys(filterData).map((key) => ({
         [key]: {
-          equals: filterData[key], // Fixed the property name
+          equals: (filterData as any)[key], // Fixed the property name
         },
       })),
     });
@@ -147,7 +150,8 @@ const getByIdFromDB = async (id: string): Promise<Admin | null> => {
 const updateIntoDB = async (
   id: string,
   data: Partial<Admin>
-): Promise<Admin | null> => {
+): Promise<Admin> => {
+  console.log("chekker...");
   await prisma.admin.findUniqueOrThrow({
     where: {
       id,

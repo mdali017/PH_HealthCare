@@ -4,12 +4,14 @@ import { userRoute } from "./app/modules/User/user.routes";
 import { adminRoute } from "./app/modules/Admin/admin.routes";
 import router from "./app/routes";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import coockieParser from "cookie-parser";
 
 const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(coockieParser());
 
 // app.use("/api/v1", userRoute);
 // app.use("/api/v1/admin", adminRoute);
