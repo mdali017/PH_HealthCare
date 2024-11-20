@@ -1,7 +1,12 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { userController } from "./user.controllers";
+import auth from "../../middlewares/auth";
 const router = express.Router();
 
-router.post("/user", userController.createAdmin);
+router.post(
+  "/",
+  auth("ADMIN", "SUPER_ADMIN", "DOCTOR"),
+  userController.createAdmin
+);
 
 export const userRoute = router;
